@@ -1,0 +1,9 @@
+*{
+    box-sizing: border-box;
+}
+
+.card{
+    margin-top: 8rem;
+    width: 90svw;
+    max-width: 45rem;
+}

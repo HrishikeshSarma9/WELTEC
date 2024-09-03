@@ -30,30 +30,8 @@
       </div>
     </section>
     <script src="products.js"></script>
-    <script>
-      // Products html 
-      productsHtml = products.map(function(item) {
-        return `<!-- single product -->
-        <article class="product">
-          <img
-            src=${item.image}
-            class="product-img img"
-            alt=""
-          />
-          <footer>
-            <h5 class="product-name">${item.title}</h5>
-            <span class="product-price">$${item.price}</span>
-          </footer>
-        </article>`        
-      })
-
-      // Companies
-      companies = products.map((item)=>{
-        return `<button class="company-btn">${item.company}</button>`        
-      })
+    <script src="app.js">
       
-      document.getElementById('products').innerHTML = productsHtml.join('')
-      document.getElementById('companies').innerHTML = '<button class="company-btn">all</button>' + companies.join('')
     </script>
 
     
