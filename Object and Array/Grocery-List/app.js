@@ -7,7 +7,7 @@ function onSubmit() {
     if (grocery.value === "") {
         alert("Empty item");
     } else {
-        groceryList.push(grocery.value);
+        groceryList.unshift(grocery.value);
         console.log("list", groceryList);
         grocery.value = "";
         displayList();
