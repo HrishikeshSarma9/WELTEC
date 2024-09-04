@@ -23,17 +23,28 @@ function displayProduct(productList){
 // Display company names
 function displayBrand(){
      // Companies
-  companies = products.map((item)=>{
-    return `<button class="company-btn" onclick="filterBrand('${item.company}')">${item.company}</button>`        
+  let companies = products.reduce(function(p, c){
+    console.log('p',p);
+    
+    if(p.includes(c.company) == false){
+      p.push(c.company);
+    }
+    return p;
+  },[]);
+  
+  companies.unshift("all")
+
+  let chtml = companies.map((item)=>{
+    return `<button class="company-btn" onclick="filterBrand('${item}')">${item}</button>`        
   })
  
-  document.getElementById('companies').innerHTML = `<button class="company-btn" onclick="${displayProduct(products)}">all</button>` + companies.join('')
+  document.getElementById('companies').innerHTML =  chtml.join('')
 }
 
 // Filter products according to the brand/company
 function filterBrand(brand){
     let filteredProducts = products.filter((items)=>{
-        return items.company == brand;
+        return items.company == brand || brand=="all";
     })
     
     displayProduct(filteredProducts)

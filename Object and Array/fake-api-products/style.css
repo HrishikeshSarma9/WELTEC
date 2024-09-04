@@ -1,0 +1,52 @@
+*{
+    box-sizing: border-box;
+}
+
+.category-link{
+    text-transform: capitalize;
+    color: red;
+    transition: all .3s ease-in-out ;
+
+    &:hover{
+        color: rgb(160, 160, 235);
+        text-decoration: underline !important;
+    }
+}
+.card{
+    border: 0;
+    padding: 2rem 0;
+    position: relative;
+
+    & .img-container{
+        height: 20rem;
+        width: 100%;
+ 
+    }
+    & .img-container img{
+        width: 100%;
+        aspect-ratio: 1/1;
+        object-fit: contain;
+        object-position: top center;
+    }
+    & .item-name{
+        font-size: 1rem;
+    }
+    & .item-catagory{
+        font-size: 1rem;
+        text-transform: capitalize;
+    }
+    & .item-price{
+        position: absolute;
+        top: -1rem;
+        left: -1rem;
+        padding: .4rem;
+        aspect-ratio: 1/1;
+        background-color: rgb(247, 134, 81);
+        color: white;
+        text-shadow: 1px 1px black;
+    }
+
+    &:hover{
+       box-shadow: 3px 2px 5px 1px rgba(201, 198, 198, 0.349);
+    }
+}
