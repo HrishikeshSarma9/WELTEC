@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Set example</title>
+</head>
+<body>
+    <ul id="display"></ul>
+    <script>
+        
+        let arr = []
+      
+        fetch("https://fakestoreapi.com/products")
+        .then(res=>res.json())
+        .then((v) => {
+            let a = new Set()
+            v.forEach(element => {
+                // console.log(element.category);
+                a.add(element.category)
+            });   
+
+            arr = [...a]
+            
+            let html = arr.map((item)=>{
+                return `<li>${item}</li>`
+            })
+            
+            document.getElementById("display").innerHTML = html.join("")
+        })
+        
+    </script>
+</body>
+</html>
