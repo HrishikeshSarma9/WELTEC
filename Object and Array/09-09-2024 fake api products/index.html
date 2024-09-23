@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.3.0/fonts/remixicon.css" rel="stylesheet" />
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+    <nav class="navbar position-sticky top-0 start-0 end-0 z-3 bg-body-tertiary">
+        <div class="container px-2">
+            <a class="navbar-brand" href="#">FakeDukan</a>
+
+            <ul class="navbar-nav ms-auto me-3">
+                <li class="nav-item">
+                    <a class="nav-link active" href="#">
+                        <button type="button" class="btn btn-dark position-relative" type="button"
+                            data-bs-toggle="offcanvas" data-bs-target="#cart-checkout">
+                            Checkout
+                            <span id="cart-item-count"
+                                class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                0
+                                <span class="visually-hidden">unread messages</span>
+                            </span>
+                        </button>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Cart checkout Offcanvas -->
+
+    <div class="offcanvas offcanvas-end w-50" data-bs-backdrop="static" tabindex="-1" id="cart-checkout"
+        aria-labelledby="cartcheckout">
+        <div class="offcanvas-header text-bg-dark " data-bs-theme="dark">
+            <h3 class="offcanvas-title" id="staticBackdropLabel">Shopping Cart</h3>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close">
+                <!-- <i class="ri-close-large-line text-light"></i> -->
+            </button>
+        </div>
+        <div class="offcanvas-body pt-5">
+            <div id="checkout-list">
+                <!-- Checkout list items -->
+                No item added
+            </div>
+        </div>
+    </div>
+
+    <!-- Main page -->
+    <div class="container mx-auto p-0 m-0 py-4">
+        <div class="row flex-sm-row flex-column">
+            <!-- sidebar -->
+            <div class="col-lg-3 col-md-4 col-sm-5" id="filter"></div>
+            <div class="col-sm">
+                <div class="row justify-content-center" id="data"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="view-cart position-fixed bottom-0 mb-5 end-0 me-5" id="view-cart">
+        <i class="ri-shopping-cart-line fs-3"></i>
+    </div>
+
+    <script>
+        let products = [];
+        let cartItem = [];
+        function fetchProducts() {
+            return fetch("https://fakestoreapi.com/products")
+                .then((res) => {
+                    return res.json();
+                })
+                .then((v) => {
+                    products = v;
+                    displayProducts(products);
+                });
+        }
+        function displayProducts(list) {
+            console.log(list);
+
+            let productHtml = list.map((x, index) => {
+
+                return `
+                            <div class="card m-3" style="width: 18rem">
+                                <div class="cart" onclick="addCart('${x.id}')">
+                                    <i class="ri-shopping-cart-2-fill"></i>
+                                </div>
+                                <div class="img-container mb-4">
+                                    <img src="${x.image
+                    }"  class="card-img-top" alt="${x.title}" />
+                                    <div class="img-background"></div>
+                                </div>
+                                <div class="item-detail text-start">
+                                    <h3 class="item-name">${x.title}</h3>
+                                    <p class="item-catagory">${x.category}</p>
+                                    
+                                    <p class="item-desciption" id="${index}" onclick="readMore(${index})">
+                                        ${x.description
+                        .slice(0, 59)
+                        .concat("..read more")}
+                                    </p>
+                                </div>
+                                <div class="item-price rounded-circle d-flex justify-content-center align-items-center">
+                                                                  
+                                    <strong>$
+                                        ${x.price}
+                                    </strong>
+                                </div>
+                            </div>
+                        
+                        `;
+            });
+            // console.log("dis", productHtml);
+            document.getElementById("data").innerHTML = productHtml.join("");
+            displayCategory();
+        }
+
+        // --------------------------------------------------
+        // --------------------Read more function-------------------
+        function readMore(i) {
+            let text = document.getElementById(i).innerHTML;
+
+            if (text.indexOf("read more") > 0) {
+                document.getElementById(i).innerHTML =
+                    products[i].description.concat("..read less");
+            } else {
+                document.getElementById(i).innerHTML = products[i].description
+                    .slice(0, 59)
+                    .concat("..read more");
+            }
+        }
+
+        // --------------------------------------------------
+        // --------------------Diaplay categories function-------------------
+
+        function displayCategory() {
+            // Companies
+            let cat = products.reduce(function (p, c) {
+                if (p.includes(c.category) == false) {
+                    p.push(c.category);
+                }
+                return p;
+            }, []);
+
+            cat.unshift("All");
+
+            let chtml = cat.map((item) => {
+                let category = regexEdit(item);
+                return `<a class="category-link d-block ms-3 text-decoration-none " onclick="filterCat('${category}')">${item}</a>`;
+            });
+
+            document.getElementById("filter").innerHTML = chtml.join("");
+        }
+
+        // Filter products according to the brand/company
+        function filterCat(cat) {
+            let filteredProducts = products.filter(function (items) {
+                let category = regexEdit(items.category);
+                // console.log(category + " cat " + cat);
+                return category == cat || cat == "All";
+            });
+
+            displayProducts(filteredProducts);
+        }
+
+        // --------------------------------------------------
+        // --------------------regex edit-------------------
+        function regexEdit(str) {
+            return str.replace(/'/g, ":");
+        }
+
+        // --------------------------------------------------
+        // --------------------Add to cart-------------------
+        function addCart(id) {
+            let itemInCart = cartItem.find((v) => {
+                return v.id == id;
+            });
+
+            // console.log("item", itemInCart);
+
+            if (!itemInCart) {
+                let product = products.find((v) => v.id == id);
+                product.quantity = 1;
+                cartItem.push(product);
+                // console.log("pro", cartItem);
+                // console.log("pro", product);
+            } else {
+                itemInCart.quantity += 1;
+                // console.log("pro", cartItem);
+            }
+
+            document.getElementById("cart-item-count").innerHTML = cartItem.length;
+            checkout()
+        }
+
+        function checkout() {
+            let itemList = cartItem.map((items, index) => {
+
+                return `
+                        <div class="row">
+                            <div class="col-3">
+                                <img src="${items.image}" width="100%" alt="${items.title}" />
+                            </div>
+                            <div class="col d-flex flex-column justify-content-between">
+                                <div>
+                                    <h5>${items.title}</h5>
+                                    <p class="text-capitalize">${items.category}</p>
+                                </div>
+                                <div>
+                                    <i class="ri-add-line" onclick="addQuantity(${index})"></i>
+                                    <input type="number" min=1 value="${items.quantity}" name="title" id="title" class="w-25 text-center" />
+                                    <i class="ri-subtract-line" onclick="minusQuantity(${index})"></i>
+                                </div>
+                            </div>
+                            <div class="col-2 text-end"><strong>$ ${items.price}</strong></div>
+                        </div>`
+
+            })
+
+            document.getElementById("checkout-list").innerHTML = itemList.join("<hr/>")
+        }
+
+        function inputQuantity(index){
+
+        }
+
+        function addQuantity(index) {
+
+            cartItem[index].quantity += 1
+            checkout()
+        }
+        function minusQuantity(index) {
+            if(cartItem[index].quantity == 0){
+                return
+            }
+            cartItem[index].quantity -= 1
+
+            checkout()
+        }
+
+        fetchProducts();
+        // console.log(products);
+    </script>
+</body>
+
+</html>
