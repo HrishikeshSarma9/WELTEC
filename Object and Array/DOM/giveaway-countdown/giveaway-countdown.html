@@ -37,13 +37,22 @@
 
             }
         }
+        .overlay::after{
+            position: absolute;
+            content: "";
+            background-image: radial-gradient(rgba(255, 255, 255, 0),rgba(0, 0, 0, 0.459));
+            inset: 0;
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="row  align-items-center">
             <div class="col">
-                <img src="https://images.unsplash.com/photo-1695578130391-929bdfff85d8?q=80&w=1770&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="iphone" width="100%">
+                <div class="overlay position-relative">
+                    <img src="https://images.unsplash.com/photo-1695578130391-929bdfff85d8?q=80&w=1770&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="iphone" width="100%">
+                </div>
+                
             </div>
             <div class="col">
                 <h2 class="text-uppercase text-blue">old iphone Giveaway</h2>
@@ -102,7 +111,7 @@
                 if(count == end+1){
                     clearInterval(c)
                 }
-            },80)
+            },10)
         }
         // console.log(endDate);
         
