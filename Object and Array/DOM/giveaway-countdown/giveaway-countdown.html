@@ -64,11 +64,14 @@
         let endDate = new Date(2024,9,14,11,30)
         // console.log();
         let flag = true
-        setInterval(()=>{
+        let h = setInterval(()=>{
             
             
             let cdate = new Date()
             let timediff = endDate - cdate
+            if(timediff == 0){
+                clearInterval(h)
+            }
 
             let days = Math.floor(timediff/(24*60*60*1000))
             // timediff % hours per days in millisecs = number of hours left
