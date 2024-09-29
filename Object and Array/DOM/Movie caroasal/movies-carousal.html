@@ -2,97 +2,409 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Movie carousal</title>
 
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- remix Icon CDN -->
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@4.3.0/fonts/remixicon.css" rel="stylesheet" />
+
+  <!-- Bootstrap CDN -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+  <style>
+    .carousel {
+      max-height: 80svh !important;
+    }
+
+    .carousel-caption {
+      background-color: transparent;
+      backdrop-filter: blur(30px);
+      --webkit-backdrop-filter: blur(30px);
+      /* filter: blur(2); */
+      background-image: linear-gradient(to bottom right,
+          rgba(44, 44, 44, 0.438) 50%,
+          rgba(255, 255, 255, 0.349));
+      /* background-repeat: no-repeat; */
+      position: absolute;
+      right: none;
+      bottom: 0;
+      left: 0;
+      padding-top: 1.25rem;
+      padding-bottom: 1.25rem;
+      padding-inline: 1.5rem;
+      color: #fff;
+      text-align: left;
+    }
+
+    .text-small {
+      font-size: 0.9rem;
+    }
+
+    .score {
+      display: flex;
+      flex-direction: column;
+
+      & h2 {
+        padding: 1rem;
+        width: fit-content;
+        align-self: center;
+        backdrop-filter: blur(30px);
+        border-radius: 50px;
+      }
+    }
+
+    .score:nth-child(1) {
+      & h2 {
+        /* background-color: rgba(255, 77, 0, 0.37);  */
+        border: 3px rgb(245, 120, 67);
+        border-style: double;
+      }
+    }
+
+    .score:nth-child(2) {
+      & h2 {
+        /* background-color: rgba(117, 230, 30, 0.267); */
+        border: 3px rgb(117, 230, 30);
+        border-style: double;
+      }
+    }
+
+    .nav-btn {
+      width: fit-content;
+      position: absolute;
+      z-index: 1;
+      top: 1rem;
+      left: 2rem;
+    }
+
+    .btn-next,
+    .btn-prev {
+      background: transparent;
+      border: 2px solid rgba(255, 255, 255, 0.151);
+      color: white;
+      background-color: rgba(153, 153, 153, 0.384);
+      backdrop-filter: blur(30px);
+      padding: 0.7rem 1rem;
+      transition: all 200ms ease-in-out;
+
+      &:hover {
+        border-color: white;
+      }
+    }
+
+    .achievements {
+      min-height: 100%;
+      /* Ensure the column takes full height */
+    }
+
+    .achievements .row:last-child {
+      margin-top: auto;
+      /* Push the last row to the bottom */
+    }
+
+    .type {
+      cursor: default;
+    }
+
+    .carousel-img {
+      aspect-ratio: 16/9;
+      object-fit: cover;
+      object-position: top;
+    }
+
+    #sub-carousal.carousel {
+      /* width: 40%; */
+      position: absolute;
+      bottom: -15rem;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 11;
+
+      & .carousel-item img {
+        margin-inline: auto;
+        width: 80% !important;
+        aspect-ratio: 16/9;
+        object-fit: cover;
+        object-position: top;
+      }
+
+      & .carousel-control-prev,
+      .carousel-control-next {
+        opacity: 1;
+      }
+    }
+  </style>
 </head>
 
 <body>
   <main>
-    <section class="container">
-      <!-- title -->
-      <div class="title">
-        <h2>our reviews</h2>
-        <div class="underline"></div>
-      </div>
-
-      <!-- Carousel -->
-      <div id="movie-carousal" class="carousel slide">
-
-        <div class="carousel-inner" id="carousel-inner">
-          <div class="carousel-item active">
-            <img src="https://images4.alphacoders.com/761/76146.jpg" class="d-block w-100" alt="Avatar">
-            <div class="carousel-caption">
-              <h5>Avatar</h5>
-              <p>Some representative placeholder content for the first slide.</p>
-            </div>
-          </div>`;
-
+    <div class="container">
+      <div id="carouselExampleCaptions" class="carousel slide">
+        <div class="nav-btn d-flex gap-3">
+          <button class="btn-prev" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="prev">
+            <i class="ri-arrow-left-line"></i>
+            <span class="visually-hidden">Previous</span>
+          </button>
+          <button class="btn-next" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="next">
+            <i class="ri-arrow-right-line"></i>
+            <span class="visually-hidden">Next</span>
+          </button>
         </div>
-        <button class="carousel-control-prev" type="button" data-bs-target="#movie-carousal" data-bs-slide="prev">
-          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-          <span class="visually-hidden">Previous</span>
-        </button>
-        <button class="carousel-control-next" type="button" data-bs-target="#movie-carousal" data-bs-slide="next">
-          <span class="carousel-control-next-icon" aria-hidden="true"></span>
-          <span class="visually-hidden">Next</span>
-        </button>
-      </div>
-      <!-- random button -->
 
-
+        <!-- Carousal Content -->
+        <div class="carousel-inner" id="carousel-inner"></div>
       </div>
-    </section>
+    </div>
   </main>
-
 
   <script src="movies.js"></script>
   <script>
-    let movieList = movies
+    let movieList = movies;
     // flag for active tag in carosol
     let act = true;
-    console.log(movieList);
-    let html = ""
+    // console.log(movieList);
+    let html = "";
     movieList.forEach((movie, index) => {
+      console.log(act);
       if (act) {
         act = false;
-        html = `<div class="carousel-item active">
-                            <img src=${movie.Images[0]} class="d-block w-100" alt=${movie.Title}>
-                            <div class="carousel-caption d-none d-md-block">
-                            <h5>${movie.title}</h5>
-                            <p>Some representative placeholder content for the first slide.</p>
-                            </div>
-                        </div>`
-      }
-    })
-
-    movieList.map(function (movie) {
-      console.log(movie);
-
-      if (act) {
-        act = false;
-        return ` <div class="carousel-item active">
-                    <img src=${movie.Images[0]} class="d-block w-100" alt=${movie.Title}>
-                    <div class="carousel-caption d-none d-md-block">
-                      <h5>${movie.title}</h5>
-                      <p>Some representative placeholder content for the first slide.</p>
+        html += `<div class="carousel-item active">
+          <img src=${movie.Poster
+          } class="d-block w-100 carousel-img" width="100%" alt=${movie.Title
+          } />
+          <div class="carousel-caption d-none d-md-block">
+            <div class="row title mb-1 pt-3">
+              <h2 class="col">
+                ${movie.Title} (${movie.Year})
+                <span class="rounded-pill text-small text-bg-warning px-3 py-1 fs-6">${movie.Rated
+          }</span>
+              </h2>
+            </div>
+            <div class="row text-small gap-5 pb-5">
+              <div class="col details">
+               
+                <div class="row text-small mb-4 fw-medium flex-nowrap">
+                  <div class="col-auto runtime">${getRuntime(
+            movie.Runtime
+          )}</div>
+                  <div class="col genre">${movie.Genre}</div>
+                  <div class="col release">${movie.Released}</div>
+                </div>
+                <div class="row fw-light flex-column gap-1 mb-1">
+                  <div class="col">
+                    <span class="fw-bold">Cast: </span>${movie.Actors}
+                  </div>
+                  <div class="col">
+                    <span class="fw-bold">Director: </span>${movie.Director}
+                  </div>
+                  <div class="col">
+                    <span class="fw-bold">Writer: </span>${movie.Writer}
+                  </div>
+                  <div class="col">
+                    <span class="fw-bold">Language: </span>${movie.Language}
+                  </div>
+                  <div class="col">
+                    <span class="fw-bold">Country: </span>${movie.Country}
+                  </div>
+                </div>
+                <div class="row fw-medium mt-4">
+                  <p>${movie.Plot}
+                  </p>
+                </div>
+              </div>
+              <div class="col achievements">
+                <div class="row text-center">
+                  <div class="col score">
+                    <h2>${movie.Metascore}</h2>
+                    <p>Metascore</p>
+                  </div>
+                  <div class="col score">
+                    <h2>${movie.imdbRating}</h2>
+                    <p>IMDB</p>
+                  </div>
+                </div>
+                <div class="row fw-light flex-column gap-1 mb-1 text-end ">
+                  <div class="col">
+                    <span class="fw-bold">IMDB Votes: </span>${movie.imdbVotes}
+                  </div>
+                  <div class="col">
+                    <span class="fw-bold">IMDB ID: </span>${movie.imdbID}
+                  </div>
+                  <div class="col">
+                    <span class="fw-bold">Awards: </span>${movie.Awards}
+                  </div>
+                  <div class="col">
+                    <div class="type text-bg-warning rounded px-3 py-1 fw-medium position-absolute bottom-0 end-0 mb-3 me-3 fs-6 curs">
+                      ${movie.Type == "movie"
+            ? "Movie"
+            : "TV ( " + movie.totalSeasons + " Seasons )"
+          }
                     </div>
-                  </div>`;
-      } else
-        return `  <div class="carousel-item">
-                            <img src=${movie.Images[0]} class="d-block w-100" alt=${movie.Title}>
-                            <div class="carousel-caption d-none d-md-block">
-                            <h5>Second slide label</h5>
-                            <p>Some representative placeholder content for the second slide.</p>
-                            </div>
-                        </div>`;
-    });
-    console.log(html);
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Sub Carousal -->
+          <div id="sub-carousal" class="carousel sub-carousal slide ">
+            <div class="carousel-inner" id="sub-carousal-content">
+              ${getContent(movie.Images)}
+              
+              
 
-    document.getElementById("carousel-inner").innerHTML = html.join(" ");
+              <button class="carousel-control-prev ms-5" type="button" data-bs-target="#sub-carousal" data-bs-slide="prev">
+                <i class="ri-arrow-left-fill fs-1 bg-warning rounded-pill"></i>
+                <span class="visually-hidden">Previous</span>
+              </button>
+              <button class="carousel-control-next me-5" type="button" data-bs-target="#sub-carousal" data-bs-slide="next">
+                <i class="ri-arrow-right-fill fs-1 bg-warning rounded-pill"></i>
+                <span class="visually-hidden">Next</span>
+              </button>
+            </div>
+          </div>
+
+        </div>`;
+      } else if (!act) {
+        html += `
+          <div class="carousel-item">
+            <img src=${movie.Poster
+          } class="d-block w-100 carousel-img" width="100%" alt=${movie.Title
+          } />
+            <div class="carousel-caption d-none d-md-block">
+              <div class="row title mb-1 pt-3">
+                <h2 class="col">
+                  ${movie.Title} (${movie.Year})
+                  <span class="rounded-pill text-small text-bg-warning px-3 py-1 fs-6">${movie.Rated
+          }</span>
+                </h2>
+              </div>
+              <div class="row text-small gap-5 pb-5">
+                <div class="col details">
+                
+                  <div class="row text-small mb-4 fw-medium flex-nowrap">
+                    <div class="col-auto runtime">${getRuntime(
+            movie.Runtime
+          )}</div>
+                    <div class="col genre">${movie.Genre}</div>
+                    <div class="col release">${movie.Released}</div>
+                  </div>
+                  <div class="row fw-light flex-column gap-1 mb-1">
+                    <div class="col">
+                      <span class="fw-bold">Cast: </span>${movie.Actors}
+                    </div>
+                    <div class="col">
+                      <span class="fw-bold">Director: </span>${movie.Director}
+                    </div>
+                    <div class="col">
+                      <span class="fw-bold">Writer: </span>${movie.Writer}
+                    </div>
+                    <div class="col">
+                      <span class="fw-bold">Language: </span>${movie.Language}
+                    </div>
+                    <div class="col">
+                      <span class="fw-bold">Country: </span>${movie.Country}
+                    </div>
+                  </div>
+                  <div class="row fw-medium mt-4">
+                    <p>${movie.Plot}
+                    </p>
+                  </div>
+                </div>
+                <div class="col achievements">
+                  <div class="row text-center">
+                    <div class="col score">
+                      <h2>${movie.Metascore}</h2>
+                      <p>Metascore</p>
+                    </div>
+                    <div class="col score">
+                      <h2>${movie.imdbRating}</h2>
+                      <p>IMDB</p>
+                    </div>
+                  </div>
+                  <div class="row fw-light flex-column gap-1 mb-1 text-end ">
+                    <div class="col">
+                      <span class="fw-bold">IMDB Votes: </span>${movie.imdbVotes
+          }
+                    </div>
+                    <div class="col">
+                      <span class="fw-bold">IMDB ID: </span>${movie.imdbID}
+                    </div>
+                    <div class="col">
+                      <span class="fw-bold">Awards: </span>${movie.Awards}
+                    </div>
+                    <div class="col">
+                      <div class="type text-bg-warning rounded px-3 py-1 fw-medium position-absolute bottom-0 end-0 mb-3 me-3 fs-6 curs">
+                        ${movie.Type == "movie"
+            ? "Movie"
+            : "TV ( " + movie.totalSeasons + " Seasons )"
+          }
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Sub Carousal -->
+          <div id="sub-carousal" class="carousel sub-carousal slide ">
+            <div class="carousel-inner" id="sub-carousal-content">
+              ${getContent(movie.Images)}
+              
+              
+
+              <button class="carousel-control-prev ms-5" type="button" data-bs-target="#sub-carousal" data-bs-slide="prev">
+                <i class="ri-arrow-left-fill fs-1 bg-warning rounded-pill"></i>
+                <span class="visually-hidden">Previous</span>
+              </button>
+              <button class="carousel-control-next me-5" type="button" data-bs-target="#sub-carousal" data-bs-slide="next">
+                <i class="ri-arrow-right-fill fs-1 bg-warning rounded-pill"></i>
+                <span class="visually-hidden">Next</span>
+              </button>
+            </div>
+          </div>
+          </div>
+        `;
+      }
+    });
+
+    function getRuntime(time) {
+      if (time == "N/A") {
+        return time;
+      } else {
+        let arr = parseInt(time);
+        return parseInt(arr / 60) + "hr " + (arr % 60) + "min";
+      }
+    }
+
+    function getContent(images) {
+      let a = true;
+      images.forEach((i) => {
+        if (a) {
+          a = false;
+
+          return `<div class="carousel-item active">
+                <img
+                  src=${i}
+                   class="d-block w-100" alt="...">
+              </div>`;
+        } else {
+          console.log(
+            a +
+            "  " +
+            `<div class="carousel-item ">
+                <img src=${i} class="d-block w-100" alt="...">
+              </div>`
+          );
+          return `<div class="carousel-item ">
+                <img src=${i} class="d-block w-100" alt="...">
+              </div>`;
+        }
+      });
+    }
+
+    document.getElementById("carousel-inner").innerHTML = html;
   </script>
 </body>
 
