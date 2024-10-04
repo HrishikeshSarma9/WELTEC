@@ -41,20 +41,58 @@
         <div class="login container mx-auto">
             <div class="card p-5" style="width: 25rem;">
                 <h1 class="heading text-center mb-4">Login</h1>
-                <div class="form-floating mb-4">
-                    <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com">
-                    <label for="floatingInput">Email address</label>
-                    <p class="input-error text-danger visually-hidden">Incorect</p>
-                </div>
-                <div class="form-floating mb-4">
-                    <input type="password" class="form-control" id="floatingPassword" placeholder="Password">
-                    <label for="floatingPassword">Password</label>
-                </div>
-                <input class="btn btn-primary" type="submit" value="LOGIN">
+                <form onsubmit="handleSubmit(event)">
+                    <div class="form-floating mb-4">
+                        <input type="email" class="form-control" id="email" placeholder="name@example.com">
+                        <label for="email">Email address</label>
+                        <p class="input-error text-danger visually-hidden">Incorect</p>
+                    </div>
+                    <div class="form-floating mb-4">
+                        <input type="password" class="form-control" id="password" placeholder="Password">
+                        <label for="password">Password</label>
+                    </div>
+                    <input class="btn btn-primary" type="submit" value="LOGIN">
+                </form>
             </div>
-            
         </div>
     </main>
+
+    <script>
+        let obj = {
+            "email": document.getElementById("email").value,
+            "password": document.getElementById("password").value,
+        }
+
+        const handleSubmit =(e) =>{
+            e.preventDefault()
+            let obj = {
+            "email": document.getElementById("email").value,
+            "password": document.getElementById("password").value
+        }
+        fetch("http://localhost:4444/auth/login",{
+            method: "POST",
+            headers:{
+                'content-type':'application/json'
+            },
+            body:JSON.stringify(obj)
+        }).then(res=>res.json())
+        .then(v=>{
+            console.log(v);
+            sessionStorage.setItem("token", JSON.stringify(v))
+            window.location.href = "./recruiter/welcome-recuiter.html"
+
+            
+        })
+        .catch(err=>{
+            console.log(err);
+        })
+            
+        
+        // console.log(obj);
+        }
+       
+        
+    </script>
 </body>
 
 </html>
