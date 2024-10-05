@@ -16,53 +16,15 @@
 <body>
   <div class="container">
     <table class="table" id="display">
-      <tr>
-        <th scope="row">${item.id}</th>
-        <th>${item.name}</th>
-        <th>${item.city}</th>
-        <th><img src="${item.avatar}" width="20rem" /></th>
-        <th>
-          <a href="#" class="btn btn-danger"><i class="ri-delete-bin-7-fill"></i></a>
-        </th>
-      </tr>
+      
     </table>
+    <div id="popup"></div>
   </div>
-
+<script src="display.js"></script>
+<script src="delete.js"></script>
+<script src="edit.js"></script>
   <script>
     let link = "https://66fe265469936930895739f5.mockapi.io/api/wltk/data"
-    const getData = (url, func) => {
-      fetch(url)
-        .then((res) => res.json())
-        .then((y) => func(url,y));
-    };
-    const displayData = (url,data) => {
-      let html = data.map((item, index) => {
-        return `<tr >
-           <th scope="row">${item.id}</th>
-                        <th>${item.name}</th>
-                        <th >${item.city}</th>
-                        <th ><img src=${item.avatar} width="20rem"></th>        
-                        <th > <a href="#" onclick="deleteData('${url}','${item.id}')" class="btn btn-danger"><i class="ri-delete-bin-7-fill"></i></a></th>        
-    
-                    </tr>`;
-      });
-      document.getElementById("display").innerHTML = html.join("");
-    };
-    const deleteData = (url, id) => {
-      console.log(url);
-      
-      fetch(url+"/"+id, {
-        method: "DELETE",
-        headers: {
-          "content-type": "application/json"
-        },
-        
-      }).then(res => res.json())
-      .then(v=>{
-        alert("Deleted Data :" + v)
-        getData(url,displayData)
-      })
-    }
     getData(link, displayData)
   </script>
 </body>
