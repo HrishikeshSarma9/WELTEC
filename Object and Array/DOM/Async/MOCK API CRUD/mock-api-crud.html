@@ -15,17 +15,44 @@
 
 <body>
   <div class="container">
-    <table class="table" id="display">
-      
+    <form name="add-data" onsubmit="addData(event,link)">
+      <div class="row">
+        <div class="col mb-3">
+          <label for="name" class="form-label">Name</label>
+          <input type="text" class="form-control" id="name" name="name" />
+        </div>
+        <div class="col mb-3">
+          <label for="city" class="form-label">City</label>
+          <input type="text" class="form-control" id="city" name="city" />
+        </div>
+        <div class="col mb-3">
+          <label for="department" class="form-label">Department</label>
+          <input type="text" class="form-control" id="department" name="department" />
+        </div>
+      </div>
+      <input type="submit" class="btn btn-outline-primary" value="Add Data" />
+    </form>
+    <table class="table table-bordered table-responsive table-hover">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Name</th>
+          <th scope="col">City</th>
+          <th scope="col">Department</th>
+        </tr>
+      </thead>
+      <tbody id="display"></tbody>
     </table>
     <div id="popup"></div>
   </div>
-<script src="display.js"></script>
-<script src="delete.js"></script>
-<script src="edit.js"></script>
+  <script src="display.js"></script>
+  <script src="delete.js"></script>
+  <script src="edit.js"></script>
+  <script src="add-data.js"></script>
+  
   <script>
-    let link = "https://66fe265469936930895739f5.mockapi.io/api/wltk/data"
-    getData(link, displayData)
+    let link = "https://66fe265469936930895739f5.mockapi.io/api/wltk/data";
+    getData(link, displayData);
   </script>
 </body>
 
