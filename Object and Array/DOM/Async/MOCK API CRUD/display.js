@@ -14,14 +14,14 @@ const displayData = (url, data) => {
                     <td>${item.name}</td>
                     <td >${item.city}</td>        
                     <td >${item.department}</td>        
-                    <td > <a href="#" onclick="deleteData('${url}','${item.id}')" class="btn btn-danger"><i class="ri-delete-bin-7-fill"></i></a></td>        
+                    <td > <a href="#" onclick="deleteData('${url}','${item.id}')" class="btn text-danger"><i class="ri-delete-bin-7-fill"></i></a></td>        
                     <td > 
-                        <a href="#" onclick="editData('${url}','${item.id}')" class="btn btn-danger">
-                            <i class="ri-pencil-fill"></i>
+                        <a href="#" onclick="editData('${url}','${item.id}')" class="btn text-dark-emphasis">
+                            <i class="ri-edit-2-fill"></i>
                         </a>
                     </td>        
                 </tr>`;
   });
-  
+
   document.getElementById("display").innerHTML = html.join("");
 };
