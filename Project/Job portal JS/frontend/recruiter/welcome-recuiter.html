@@ -25,17 +25,12 @@
     </div>
 </main>
 
+<script src="../common/nav.js"></script>
 <script>
     
     
 const navbarLoad = ()=>{
-    const headerElement = document.getElementById('navbar-load');
-
-    fetch('../common/header.html')
-    .then(response => response.text())
-    .then(navbarHTML => {
-        headerElement.innerHTML = navbarHTML;
-    });
+    document.getElementById("navbar-load").innerHTML = navbar
 }
 
 let to = JSON.parse(sessionStorage.getItem("token"))

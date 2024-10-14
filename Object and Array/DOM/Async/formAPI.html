@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+    <div class="container">
+        <div class="row justify-content-center min-vh-100 align-items-center">
+            <div class="col-md-6">
+                <div class="card shadow">
+                    <div class="card-body">
+                        <h3 class="card-title text-center mb-4">Registration Form</h3>
+                        
+                        <form id="validationForm" class="needs-validation" novalidate>
+                            <!-- Phone Number -->
+                            <div class="mb-3">
+                                <label for="phone" class="form-label">Phone Number</label>
+                                <input 
+                                    type="tel" 
+                                    class="form-control" 
+                                    id="phone" 
+                                    pattern="[0-9]{10}" 
+                                    maxlength="10" 
+                                    required
+                                >
+                                <div class="invalid-feedback">
+                                    Please enter a valid 10-digit phone number
+                                </div>
+                            </div>
+
+                            <!-- Age -->
+                            <div class="mb-3">
+                                <label for="age" class="form-label">Age (18-40)</label>
+                                <input 
+                                    type="number" 
+                                    class="form-control" 
+                                    id="age" 
+                                    min="18" 
+                                    max="40" 
+                                    required
+                                >
+                                <div class="invalid-feedback" id="ageError">
+                                    Age must be between 18 and 40
+                                </div>
+                            </div>
+
+                            <!-- Password -->
+                            <div class="mb-3">
+                                <label for="password" class="form-label">Password</label>
+                                <input 
+                                    type="password" 
+                                    class="form-control" 
+                                    id="password" 
+                                    pattern="^(?=.*[A-Z])(?=.*[0-9])[a-zA-Z0-9]+$" 
+                                    required
+                                >
+                                <div class="invalid-feedback">
+                                    Password must contain at least one uppercase letter and one number
+                                </div>
+                                <div class="form-text">
+                                    Password must contain at least one uppercase letter and one number
+                                </div>
+                            </div>
+
+                            <!-- Submit Button -->
+                            <div class="d-grid">
+                                <button type="submit" class="btn btn-primary">Submit</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+    <script>
+        const form = document.getElementById('validationForm');
+        const age = document.getElementById('age');
+        const ageError = document.getElementById('ageError');
+        
+        // Prevent form submission and validate
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const phone = document.getElementById('phone');
+            const password = document.getElementById('password');
+            
+            let isValid = true;
+
+            // Reset form validation state
+            form.classList.remove('was-validated');
+
+            // Phone validation
+            if (!phone.validity.valid) {
+                isValid = false;
+                if (phone.validity.patternMismatch) {
+                    console.log('Phone number must be exactly 10 digits');
+                }
+            }
+
+            // Age validation
+            if (!age.validity.valid) {
+                isValid = false;
+                if (age.validity.rangeOverflow) {
+                    ageError.textContent = 'Age must be less than or equal to 40';
+                    console.log('Age must be less than or equal to 40');
+                } else if (age.validity.rangeUnderflow) {
+                    ageError.textContent = 'Age must be at least 18';
+                    console.log('Age must be at least 18');
+                }
+            }
+
+            // Password validation
+            if (!password.validity.valid) {
+                isValid = false;
+                if (password.validity.patternMismatch) {
+                    console.log('Password must contain at least one uppercase letter and one number');
+                }
+            }
+
+            // Add validation classes
+            form.classList.add('was-validated');
+
+            if (isValid) {
+                console.log('Form is valid!');
+                console.log({
+                    phone: phone.value,
+                    age: age.value,
+                    password: password.value
+                });
+            }
+        });
+
+        // Real-time age validation
+        age.addEventListener('input', () => {
+            if (age.validity.rangeOverflow) {
+                ageError.textContent = 'Age must be less than or equal to 40';
+            } else if (age.validity.rangeUnderflow) {
+                ageError.textContent = 'Age must be at least 18';
+            } else {
+                ageError.textContent = 'Age must be between 18 and 40';
+            }
+        });
+    </script>
+</body>
+</html>

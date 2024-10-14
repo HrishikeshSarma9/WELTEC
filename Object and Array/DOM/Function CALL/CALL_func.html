@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CALL Function</title>
+</head>
+
+<body>
+    <table id="dis">
+        <tr>
+            <td></td>
+        </tr>
+    </table>
+    <script>
+        const obj = {
+            dfetch: function () {
+                return `<tr><td>${this.name}</td><td>${this.username}</td></tr>`
+            }
+        }
+        const display = async () => {
+            let req = await fetch("https://jsonplaceholder.typicode.com/users")
+            let status = await req.status
+            let res = await req.json()
+            console.log(status);
+            if (status == "200") {
+                let html = res.map(ele => obj.dfetch.call(ele))
+                document.getElementById("dis").innerHTML = html.join("")
+            }
+
+
+
+        }
+        display()
+    </script>
+
+</body>
+
+</html>
